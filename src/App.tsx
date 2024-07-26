@@ -1,9 +1,9 @@
 // src/App.tsx
 import React, { useState } from 'react';
-import { ThemeProvider, CssBaseline, Switch } from '@mui/material';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { lightTheme, darkTheme } from './theme';
 import Button from '@mui/material/Button';
-import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Home from './pages/Home';
