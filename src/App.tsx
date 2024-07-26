@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// src/App.tsx
+import React, { useState } from 'react';
+import { ThemeProvider, CssBaseline, Switch } from '@mui/material';
+import { lightTheme, darkTheme } from './theme';
+import Button from '@mui/material/Button';
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Home from './pages/Home';
+import DrawerAppBar from './components/NavBar';
 
-function App() {
+const App: React.FC = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and testing.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+
+      <Router>
+        <CssBaseline />
+        <DrawerAppBar checked={isDarkMode} setChecked={setIsDarkMode} />
+        <div style={{ marginTop: '70px' }}>
+          <Button variant="contained" color="primary" onClick={toggleTheme}>
+            Toggle Theme
+          </Button>
+          <Button variant="contained" color="secondary">
+            Secondary Button
+          </Button>
+        </div>
+        <div>
+          <Routes>
+            <Route path="/" Component={Home} />
+            <Route path="/about" Component={About} />
+            <Route path="/contact" Component={Contact} />
+          </Routes>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
