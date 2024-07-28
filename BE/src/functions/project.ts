@@ -52,6 +52,12 @@ app.http('GetProjects2', {
     handler: GetProjects
 });
 
+app.http('GetProjects3', {
+    methods: ['GET', 'POST'],
+    authLevel: 'anonymous',
+    handler: GetProjects
+});
+
 app.http('httpTrigger1', {
     methods: ['GET', 'POST'],
     authLevel: 'anonymous',
