@@ -5,7 +5,7 @@ export async function GetProjects(request: HttpRequest, context: InvocationConte
 
     const name = request.query.get('name') || await request.text() || 'world';
 
-    return { body: `Hello, ${name}!` };
+    return { body: `Hello, ${name}! integrated` };
 };
 
 app.http('GetProjects', {
