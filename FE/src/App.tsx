@@ -27,7 +27,7 @@ const App: React.FC = () => {
             Toggle Theme
           </Button>
           <Button variant="contained" color="secondary">
-            Test Button new workflow
+            Test Button
           </Button>
         </div>
         <div>
