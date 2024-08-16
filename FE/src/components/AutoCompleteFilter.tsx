@@ -1,5 +1,4 @@
 import { Autocomplete, Checkbox, TextField, Typography } from "@mui/material";
-import { FC } from "react";
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
@@ -29,19 +28,18 @@ const AutoCompleteFilter: React.FC<AutoCompleteProps> = (props: AutoCompleteProp
             renderInput={(params) => (
                 <TextField {...params} label={props.label} placeholder="" />
             )}
-            onChange={(event, newInputValue) => {
+            onChange={(_, newInputValue) => {
                 props.setFilteredOptions(new Set(newInputValue));
             }}
             isOptionEqualToValue={(option, value) => option === value}
             disableCloseOnSelect
-            renderTags={(value, getTagProps) => {
+            renderTags={(value) => {
                 const tags = value.length < 2 ? value : value.slice(0, 2);
                 const formattedTags = tags.map((value, index) => <Typography key={index} marginLeft={1}>{value.substring(0, 8)}</Typography>)
                 if (tags.length < value.length) {
                     formattedTags.push(<Typography>...</Typography>)
                 }
                 return formattedTags;
-                return ['']
             }
 
             }
