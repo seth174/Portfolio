@@ -26,7 +26,7 @@ const Projects: React.FC = () => {
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
 
-    const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    const StyledIconButton = styled(IconButton)(() => ({
         cursor: 'pointer',
         '&:hover': {
             cursor: 'pointer',
@@ -42,26 +42,20 @@ const Projects: React.FC = () => {
     const shouldShowProjectCard = (languages: string[], libaries: string[], frameworks: string[]): boolean => {
 
         const hasLanguage = languages.some((value) => {
-            if (filteredLanguages.has(value)) {
-                return true;
-            }
+            return filteredLanguages.has(value);
         });
 
         const hasLibrary = libaries.some((value) => {
-            if (filteredLibraries.has(value)) {
-                return true;
-            }
+            return filteredLibraries.has(value)
         });
 
         const hasFramework = frameworks.some((value) => {
-            if (filteredFrameworks.has(value)) {
-                return true;
-            }
+            return filteredFrameworks.has(value)
         });
 
-        return (filteredLanguages.size == 0 ? true : hasLanguage)
-            && (filteredLibraries.size == 0 ? true : hasLibrary)
-            && (filteredFrameworks.size == 0 ? true : hasFramework);
+        return (filteredLanguages.size === 0 ? true : hasLanguage)
+            && (filteredLibraries.size === 0 ? true : hasLibrary)
+            && (filteredFrameworks.size === 0 ? true : hasFramework);
     }
 
     useEffect(() => {
@@ -71,9 +65,9 @@ const Projects: React.FC = () => {
                 const response = await axios.get(`${apiUrl}/GetProjects`);
                 setApiProjects(response.data);
 
-                let languagesSet = new Set<string>();
-                let frameworksSet = new Set<string>();
-                let librariesSet = new Set<string>();
+                const languagesSet = new Set<string>();
+                const frameworksSet = new Set<string>();
+                const librariesSet = new Set<string>();
 
                 response.data.forEach((project: Project) => {
                     project.languages.forEach(language => languagesSet.add(language));
@@ -85,8 +79,6 @@ const Projects: React.FC = () => {
                 setFrameworks(Array.from(frameworksSet).sort());
                 setLibraries(Array.from(librariesSet).sort());
 
-                console.log(languages);
-
             } catch (error) {
                 console.log('error!!');
                 console.log(error);
@@ -97,7 +89,7 @@ const Projects: React.FC = () => {
 
         // Call the async function
         fetchData();
-    }, [])
+    }, [apiUrl])
 
     if (loading) {
         return (
