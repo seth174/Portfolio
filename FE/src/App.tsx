@@ -1,20 +1,16 @@
 // src/App.tsx
 import React, { useState } from 'react';
-import { ThemeProvider, CssBaseline } from '@mui/material';
+import { ThemeProvider, CssBaseline, Box } from '@mui/material';
 import { lightTheme, darkTheme } from './theme';
-import Button from '@mui/material/Button';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import About from './pages/About';
-import Contact from './pages/Contact';
 import Home from './pages/Home';
 import DrawerAppBar from './components/NavBar';
+import Projects from './pages/Projects';
+import Blog from './pages/Blog';
+import NotFound from './pages/NotFound';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
@@ -22,20 +18,16 @@ const App: React.FC = () => {
       <Router>
         <CssBaseline />
         <DrawerAppBar checked={isDarkMode} setChecked={setIsDarkMode} />
-        <div style={{ marginTop: '70px' }}>
-          <Button variant="contained" color="primary" onClick={toggleTheme}>
-            Toggle Theme
-          </Button>
-          <Button variant="contained" color="secondary">
-            Test Button
-          </Button>
-        </div>
         <div>
-          <Routes>
-            <Route path="/" Component={Home} />
-            <Route path="/about" Component={About} />
-            <Route path="/contact" Component={Contact} />
-          </Routes>
+          <Box component="main" sx={{ flexGrow: 1, mt: '64px' }}>
+            <Routes>
+              <Route path="/" Component={Home} />
+              <Route path="/home" Component={Home} />
+              <Route path="/projects" Component={Projects} />
+              <Route path="/blog" Component={Blog} />
+              <Route path="*" Component={NotFound} />
+            </Routes>
+          </Box>
         </div>
       </Router>
     </ThemeProvider>

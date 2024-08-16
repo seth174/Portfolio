@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,7 +17,7 @@ import Button from '@mui/material/Button';
 import { Switch, styled } from '@mui/material';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact'];
+const navItems = ['Home', 'Projects', 'Blog'];
 
 interface DrawerAppBarProps {
     checked: boolean;
@@ -25,6 +26,7 @@ interface DrawerAppBarProps {
 
 export default function DrawerAppBar({ checked, setChecked }: DrawerAppBarProps) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const navigate = useNavigate();
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -32,6 +34,11 @@ export default function DrawerAppBar({ checked, setChecked }: DrawerAppBarProps)
 
     const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);
+    };
+
+    const handleNavItemClick = (path: string) => {
+        navigate(path.toLowerCase());
+        handleDrawerToggle(); // Close drawer after navigation
     };
 
     const container = window !== undefined ? () => window.document.body : undefined;
@@ -92,7 +99,7 @@ export default function DrawerAppBar({ checked, setChecked }: DrawerAppBarProps)
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }} onClick={handleDrawerToggle}>
+                        <ListItemButton sx={{ textAlign: 'center' }} onClick={() => handleNavItemClick(item)}>
                             <ListItemText primary={item} />
                         </ListItemButton>
                     </ListItem>
@@ -107,37 +114,39 @@ export default function DrawerAppBar({ checked, setChecked }: DrawerAppBarProps)
         </Box>
     );
 
-    const toolbar = <Toolbar>
-        <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-        >
-            <MenuIcon />
-        </IconButton>
-        <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-        >
-            Seth's Website
-        </Typography>
-        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-                <Button key={item} sx={{ color: '#fff' }}>
-                    {item}
-                </Button>
-            ))}
-            <NightModeSwitch
-                color='secondary'
-                checked={checked}
-                onChange={handleSwitchChange}
-                inputProps={{ 'aria-label': 'controlled' }}
-            />
-        </Box>
-    </Toolbar>
+    const toolbar = (
+        <Toolbar>
+            <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+                <MenuIcon />
+            </IconButton>
+            <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            >
+                Seth's Website
+            </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                {navItems.map((item) => (
+                    <Button key={item} sx={{ color: '#fff' }} onClick={() => handleNavItemClick(item)}>
+                        {item}
+                    </Button>
+                ))}
+                <NightModeSwitch
+                    color='secondary'
+                    checked={checked}
+                    onChange={handleSwitchChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                />
+            </Box>
+        </Toolbar>
+    );
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -163,6 +172,5 @@ export default function DrawerAppBar({ checked, setChecked }: DrawerAppBarProps)
                 </Drawer>
             </nav>
         </Box>
-
-    )
+    );
 }
