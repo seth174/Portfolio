@@ -38,7 +38,10 @@ export default function DrawerAppBar({ checked, setChecked }: DrawerAppBarProps)
 
     const handleNavItemClick = (path: string) => {
         navigate(path.toLowerCase());
-        handleDrawerToggle(); // Close drawer after navigation
+        if (mobileOpen) {
+            handleDrawerToggle(); // Close drawer after navigation
+        }
+
     };
 
     const container = window !== undefined ? () => window.document.body : undefined;
@@ -93,7 +96,7 @@ export default function DrawerAppBar({ checked, setChecked }: DrawerAppBarProps)
     const drawer = (
         <Box sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }}>
-                MUI
+                Seth's Website
             </Typography>
             <Divider />
             <List>

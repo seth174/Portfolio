@@ -11,7 +11,6 @@ import AutoCompleteFilter from '../components/AutoCompleteFilter';
 
 const Projects: React.FC = () => {
 
-    console.log('API URL: ' + process.env.REACT_APP_API_URL)
     const apiUrl = process.env.REACT_APP_API_URL!;
 
     const [disabled, setDisabled] = React.useState(true);
@@ -64,7 +63,7 @@ const Projects: React.FC = () => {
             setLoading(true);
             try {
                 const response = await axios.get(`${apiUrl}/GetProjects`);
-                setApiProjects(response.data);
+                setApiProjects(response.data.sort((a: Project, b: Project) => a.sortOrder - b.sortOrder));
 
                 const languagesSet = new Set<string>();
                 const frameworksSet = new Set<string>();
@@ -124,34 +123,46 @@ const Projects: React.FC = () => {
                                     <StyledIconButton onClick={handleFilterClick}><FilterAltOffIcon fontSize='large' color='primary' /></StyledIconButton>
                             }
                         </Grid>
+
                     )
                 }
-                <Grid sm={4} md={3} display="flex" justifyContent="space-between" alignItems="center">
-                    <AutoCompleteFilter
-                        label='languages'
-                        options={languages}
-                        setFilteredOptions={setFilteredLanguages}
-                        disabled={disabled}
-                    />
-                </Grid>
-                <Grid sm={4} md={3} display="flex" justifyContent="space-between" alignItems="center">
-                    <AutoCompleteFilter
-                        label='frameworks'
-                        options={frameworks}
-                        setFilteredOptions={setFilteredFrameworks}
-                        disabled={disabled}
-                    />
-                </Grid>
-                <Grid sm={4} md={3} display="flex" justifyContent="space-between" alignItems="center">
-                    <AutoCompleteFilter
-                        label='libraries'
-                        options={libraries}
-                        setFilteredOptions={setFilteredLibraries}
-                        disabled={disabled}
-                    />
-                </Grid>
 
-
+                {!isSmallScreen &&
+                    (
+                        <Grid sm={4} md={3} display="flex" justifyContent="space-between" alignItems="center">
+                            <AutoCompleteFilter
+                                label='languages'
+                                options={languages}
+                                setFilteredOptions={setFilteredLanguages}
+                                disabled={disabled}
+                            />
+                        </Grid>
+                    )
+                }
+                {!isSmallScreen &&
+                    (
+                        <Grid sm={4} md={3} display="flex" justifyContent="space-between" alignItems="center">
+                            <AutoCompleteFilter
+                                label='frameworks'
+                                options={frameworks}
+                                setFilteredOptions={setFilteredFrameworks}
+                                disabled={disabled}
+                            />
+                        </Grid>
+                    )
+                }
+                {!isSmallScreen &&
+                    (
+                        <Grid sm={4} md={3} display="flex" justifyContent="space-between" alignItems="center">
+                            <AutoCompleteFilter
+                                label='libraries'
+                                options={libraries}
+                                setFilteredOptions={setFilteredLibraries}
+                                disabled={disabled}
+                            />
+                        </Grid>
+                    )
+                }
                 {apiProjects.map((project, index) => (
 
                     shouldShowProjectCard(project.languages, project.libraries, project.frameworks) &&

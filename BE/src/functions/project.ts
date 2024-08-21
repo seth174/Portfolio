@@ -1,13 +1,5 @@
 import { app, HttpRequest, HttpResponseInit, input, InvocationContext } from "@azure/functions";
 
-// const cosmosInput = input.cosmosDB({
-//     databaseName: 'portfolio',
-//     containerName: 'Projects',
-//     id: '{Query.id}',
-//     partitionKey: '{Query.partitionKey}',
-//     connection: 'CosmosDB2',
-// });
-
 const cosmosInputGetAllProjects = input.cosmosDB({
     databaseName: 'portfolio',
     containerName: 'Projects',

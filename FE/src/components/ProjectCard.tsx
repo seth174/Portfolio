@@ -11,7 +11,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         window.open(url, '_blank');
     };
 
-    const combinedArray: string[] = [...project.frameworks, ...project.languages];
+    const combinedArray: string[] = [...project.frameworks, ...project.languages, ...project.libraries];
 
     return (
         <Card sx={{ height: '100%' }}>

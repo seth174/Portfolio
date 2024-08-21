@@ -12,21 +12,6 @@ const commonSettings: ThemeOptions = {
                     fontWeight: 'bold',
                     transition: 'all 0.3s ease',
                 },
-                // containedPrimary: {
-                //     backgroundColor: '#1976d2', // Updated primary color
-                //     color: '#fff',
-                //     '&:hover': {
-                //         backgroundColor: '#1565c0', // Updated hover color
-                //     },
-                // },
-                // containedSecondary: {
-                //     backgroundColor: '#f57c00', // Updated secondary color
-                //     color: '#fff',
-                //     border: 'none',
-                //     '&:hover': {
-                //         backgroundColor: '#ef6c00', // Updated hover color
-                //     },
-                // },
             },
         },
     },
@@ -53,7 +38,7 @@ const darkTheme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            main: '#00246B', // Light blue primary color for dark mode
+            main: '#FFF', // Light blue primary color for dark mode
         },
         secondary: {
             main: '#CADCFC', // Light orange secondary color for dark mode

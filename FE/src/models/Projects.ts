@@ -7,6 +7,7 @@ interface Project {
     frameworks: string[];
     languages: string[];
     libraries: string[];
+    sortOrder: number;
 }
 
 export default Project;
