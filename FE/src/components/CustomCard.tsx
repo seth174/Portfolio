@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardMedia, CardContent, CardActions, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { keyframes } from '@mui/system';
 import LaunchIcon from '@mui/icons-material/Launch';
 
 interface CardParams {
@@ -12,15 +11,6 @@ interface CardParams {
     link: string;
     isProject: boolean;
 }
-
-const shimmerAnimation = keyframes`
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-`;
 
 const CustomCard: React.FC<CardParams> = ({ combinedArray, title, imageUrl, description, link, isProject }) => {
     const navigate = useNavigate();

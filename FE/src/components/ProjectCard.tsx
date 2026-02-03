@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card, CardMedia, CardContent, CardActions, Typography, Button, Box } from '@mui/material';
 import Project from '../models/Projects';
 import CustomCard from './CustomCard';
 
@@ -8,10 +7,6 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-    const handleURLClick = (url: string) => {
-        window.open(url, '_blank');
-    };
-
     const combinedArray: string[] = [...project.frameworks, ...project.languages, ...project.libraries];
 
     return (

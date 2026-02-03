@@ -1,10 +1,8 @@
-import { Box, CircularProgress } from "@mui/material";
 import axios, { AxiosError } from "axios";
 import React from "react";
 import { FC, useEffect } from "react"
-import { Blog } from "../models/Blogs";
 import LoadingBar from "../components/LoadingBar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import NotFound from "./NotFound";
 import Error from '../components/Error';
 
@@ -15,10 +13,7 @@ const BlogPost: FC = () => {
 
     const [notFound, setNotFound] = React.useState(false);
 
-    const [blogPost, setBlogPost] = React.useState<Blog[]>([]);
     const [error, setError] = React.useState(false);
-
-    const navigate = useNavigate();
 
     const { BlogId, id } = useParams();
 
@@ -28,8 +23,7 @@ const BlogPost: FC = () => {
         const fetchData = async (BlogId: string, id: string) => {
             setLoading(true);
             try {
-                const response = await axios.get(`${apiUrl}/Blog/${BlogId}/${id}`);
-                setBlogPost(response.data);
+                await axios.get(`${apiUrl}/Blog/${BlogId}/${id}`);
 
             } catch (error) {
                 console.log('error!!');
@@ -51,7 +45,7 @@ const BlogPost: FC = () => {
             fetchData(BlogId!, id!);
 
         }
-    }, [BlogId, id])
+    }, [BlogId, id, apiUrl])
 
     if (loading) {
         return (
