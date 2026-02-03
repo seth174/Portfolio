@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,151 +11,255 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Switch, styled } from '@mui/material';
+import { keyframes } from '@mui/system';
 
-const drawerWidth = 240;
-const navItems = ['Home', 'Projects', 'Blog'];
+const drawerWidth = 280;
+const navItems = [
+    { label: 'Home', path: '/home' },
+    { label: 'Projects', path: '/projects' },
+    { label: 'Blog', path: '/blog' },
+];
 
-interface DrawerAppBarProps {
-    checked: boolean;
-    setChecked: (checked: boolean) => void;
-}
+const shimmerAnimation = keyframes`
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+`;
 
-export default function DrawerAppBar({ checked, setChecked }: DrawerAppBarProps) {
+export default function DrawerAppBar() {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };
 
-    const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setChecked(event.target.checked);
+    const handleNavItemClick = (path: string) => {
+        navigate(path);
+        if (mobileOpen) {
+            handleDrawerToggle();
+        }
     };
 
-    const handleNavItemClick = (path: string) => {
-        navigate(path.toLowerCase());
-        if (mobileOpen) {
-            handleDrawerToggle(); // Close drawer after navigation
+    const isActive = (path: string) => {
+        if (path === '/home') {
+            return location.pathname === '/' || location.pathname === '/home';
         }
-
+        return location.pathname === path;
     };
 
     const container = window !== undefined ? () => window.document.body : undefined;
 
-    const NightModeSwitch = styled(Switch)(({ theme }) => ({
-        width: 62,
-        height: 34,
-        padding: 7,
-        '& .MuiSwitch-switchBase': {
-            margin: 1,
-            padding: 0,
-            transform: 'translateX(6px)',
-            '&.Mui-checked': {
-                color: '#fff',
-                transform: 'translateX(22px)',
-                '& .MuiSwitch-thumb:before': {
-                    backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-                        '#fff',
-                    )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
-                },
-                '& + .MuiSwitch-track': {
-                    opacity: 1,
-                    backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-                },
-            },
-        },
-        '& .MuiSwitch-thumb': {
-            backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
-            width: 32,
-            height: 32,
-            '&::before': {
-                content: "''",
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                left: 0,
-                top: 0,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-                    '#fff',
-                )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
-            },
-        },
-        '& .MuiSwitch-track': {
-            opacity: 1,
-            backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-            borderRadius: 20 / 2,
-        },
-    }));
-
     const drawer = (
-        <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
-                Seth's Website
-            </Typography>
+        <Box
+            sx={{
+                height: '100%',
+                background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 247, 250, 0.95) 100%)',
+                backdropFilter: 'blur(20px)',
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    p: 2,
+                    borderBottom: '1px solid rgba(102, 126, 234, 0.1)',
+                }}
+            >
+                <Typography
+                    variant="h6"
+                    sx={{
+                        fontWeight: 800,
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        fontSize: '1.5rem',
+                    }}
+                >
+                    Seth Fagen
+                </Typography>
+                <IconButton
+                    onClick={handleDrawerToggle}
+                    sx={{
+                        color: 'text.primary',
+                        '&:hover': {
+                            background: 'rgba(102, 126, 234, 0.1)',
+                        },
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            </Box>
             <Divider />
-            <List>
-                {navItems.map((item) => (
-                    <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }} onClick={() => handleNavItemClick(item)}>
-                            <ListItemText primary={item} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-                <NightModeSwitch
-                    color='secondary'
-                    checked={checked}
-                    onChange={handleSwitchChange}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                />
+            <List sx={{ pt: 2 }}>
+                {navItems.map((item) => {
+                    const active = isActive(item.path);
+                    return (
+                        <ListItem key={item.label} disablePadding sx={{ mb: 0.5 }}>
+                            <ListItemButton
+                                onClick={() => handleNavItemClick(item.path)}
+                                sx={{
+                                    mx: 1,
+                                    borderRadius: '12px',
+                                    background: active
+                                        ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%)'
+                                        : 'transparent',
+                                    border: active ? '1px solid rgba(102, 126, 234, 0.3)' : '1px solid transparent',
+                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    '&:hover': {
+                                        background: 'rgba(102, 126, 234, 0.1)',
+                                        transform: 'translateX(4px)',
+                                    },
+                                }}
+                            >
+                                <ListItemText
+                                    primary={item.label}
+                                    sx={{
+                                        '& .MuiTypography-root': {
+                                            fontWeight: active ? 700 : 500,
+                                            color: active ? '#667eea' : 'text.primary',
+                                            fontSize: '1rem',
+                                        },
+                                    }}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    );
+                })}
             </List>
         </Box>
-    );
-
-    const toolbar = (
-        <Toolbar>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}
-            >
-                <MenuIcon />
-            </IconButton>
-            <Typography
-                variant="h6"
-                component="div"
-                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-            >
-                Seth's Website
-            </Typography>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                {navItems.map((item) => (
-                    <Button key={item} sx={{ color: '#fff' }} onClick={() => handleNavItemClick(item)}>
-                        {item}
-                    </Button>
-                ))}
-                <NightModeSwitch
-                    color='secondary'
-                    checked={checked}
-                    onChange={handleSwitchChange}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                />
-            </Box>
-        </Toolbar>
     );
 
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar component="nav">
-                {toolbar}
+            <AppBar
+                component="nav"
+                position="fixed"
+                elevation={0}
+                sx={{
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(20px)',
+                    borderBottom: '1px solid rgba(102, 126, 234, 0.1)',
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                }}
+            >
+                <Toolbar
+                    sx={{
+                        justifyContent: 'space-between',
+                        px: { xs: 2, sm: 3, md: 4 },
+                        minHeight: { xs: '56px', sm: '64px' },
+                    }}
+                >
+                    {/* Mobile Menu Button */}
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{
+                            mr: 2,
+                            display: { sm: 'none' },
+                            color: 'text.primary',
+                            background: 'rgba(102, 126, 234, 0.1)',
+                            '&:hover': {
+                                background: 'rgba(102, 126, 234, 0.2)',
+                                transform: 'scale(1.1)',
+                            },
+                            transition: 'all 0.3s ease',
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+
+                    {/* Logo/Brand */}
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        onClick={() => navigate('/home')}
+                        sx={{
+                            flexGrow: { xs: 1, sm: 0 },
+                            fontWeight: 800,
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            cursor: 'pointer',
+                            fontSize: { xs: '1.2rem', sm: '1.5rem' },
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                                transform: 'scale(1.05)',
+                            },
+                        }}
+                    >
+                        Seth Fagen
+                    </Typography>
+
+                    {/* Desktop Navigation */}
+                    <Box
+                        sx={{
+                            display: { xs: 'none', sm: 'flex' },
+                            alignItems: 'center',
+                            gap: 1,
+                        }}
+                    >
+                        {navItems.map((item) => {
+                            const active = isActive(item.path);
+                            return (
+                                <Button
+                                    key={item.label}
+                                    onClick={() => handleNavItemClick(item.path)}
+                                    sx={{
+                                        color: active ? '#667eea' : 'text.primary',
+                                        fontWeight: active ? 700 : 500,
+                                        fontSize: '0.95rem',
+                                        px: 2,
+                                        py: 1,
+                                        borderRadius: '10px',
+                                        textTransform: 'none',
+                                        background: active
+                                            ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%)'
+                                            : 'transparent',
+                                        border: active ? '1px solid rgba(102, 126, 234, 0.3)' : '1px solid transparent',
+                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        position: 'relative',
+                                        overflow: 'hidden',
+                                        '&::before': active
+                                            ? {
+                                                  content: '""',
+                                                  position: 'absolute',
+                                                  top: 0,
+                                                  left: 0,
+                                                  right: 0,
+                                                  bottom: 0,
+                                                  background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
+                                                  animation: `${shimmerAnimation} 3s ease-in-out infinite`,
+                                                  backgroundSize: '200% auto',
+                                              }
+                                            : {},
+                                        '&:hover': {
+                                            background: 'rgba(102, 126, 234, 0.1)',
+                                            transform: 'translateY(-2px)',
+                                            boxShadow: '0 4px 12px rgba(102, 126, 234, 0.2)',
+                                        },
+                                    }}
+                                >
+                                    {item.label}
+                                </Button>
+                            );
+                        })}
+                    </Box>
+                </Toolbar>
             </AppBar>
             <nav>
                 <Drawer
@@ -164,11 +268,17 @@ export default function DrawerAppBar({ checked, setChecked }: DrawerAppBarProps)
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
                     ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
+                        keepMounted: true,
                     }}
                     sx={{
                         display: { xs: 'block', sm: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        '& .MuiDrawer-paper': {
+                            boxSizing: 'border-box',
+                            width: drawerWidth,
+                            borderTopRightRadius: '20px',
+                            borderBottomRightRadius: '20px',
+                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
+                        },
                     }}
                 >
                     {drawer}

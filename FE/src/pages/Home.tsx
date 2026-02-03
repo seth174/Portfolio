@@ -1,65 +1,274 @@
 // components/Home.tsx
-import { Card, CardContent, Container, Divider, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Container, Typography, Button, Stack, Fade, Grow } from '@mui/material';
+import { keyframes } from '@mui/system';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import CodeIcon from '@mui/icons-material/Code';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+
+const floatAnimation = keyframes`
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+`;
 
 const Home: React.FC = () => {
+    const navigate = useNavigate();
+    const [fadeIn, setFadeIn] = useState(false);
+    const [slideUp, setSlideUp] = useState(false);
+
+    useEffect(() => {
+        setFadeIn(true);
+        setTimeout(() => setSlideUp(true), 200);
+    }, []);
+
     return (
-        <Container maxWidth="md" sx={{ mt: 4 }}>
-            <Card>
-                <CardContent>
-                    <Typography variant="h4" component="h1" gutterBottom>
-                        Introduction
+        <Box
+            sx={{
+                minHeight: 'calc(100vh - 64px)',
+                position: 'relative',
+                overflow: 'hidden',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
+                    pointerEvents: 'none',
+                },
+            }}
+        >
+            <Container
+                maxWidth="lg"
+                sx={{
+                    position: 'relative',
+                    zIndex: 1,
+                    pt: { xs: 8, md: 12 },
+                    pb: { xs: 8, md: 12 },
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: 'calc(100vh - 64px)',
+                }}
+            >
+                <Fade in={fadeIn} timeout={1000}>
+                    <Box sx={{ textAlign: 'center', mb: 4 }}>
+                        <Typography
+                            variant="h1"
+                            component="h1"
+                            sx={{
+                                fontSize: { xs: '3rem', sm: '4rem', md: '5.5rem' },
+                                fontWeight: 800,
+                                background: 'linear-gradient(45deg, #fff 30%, #f0f0f0 90%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                                mb: 2,
+                                letterSpacing: '-0.02em',
+                                lineHeight: 1.1,
+                            }}
+                        >
+                            Seth Fagen
                     </Typography>
-                    <Typography paragraph>
-                        Hello, I’m Seth, a dedicated software engineer based in Seattle, WA, with a passion for advancing technology and tackling complex challenges. With a Bachelor of Arts in Computer Science and Hispanic Studies from DePauw University, I graduated with a GPA of 3.90/4.00, which reflects my commitment to academic excellence and technical proficiency. My educational journey included rigorous coursework in Databases, Object-Oriented Software Development, Web Programming and Cybersecurity, and Mobile Development (Android), which laid a strong foundation for my career.
+                        <Grow in={slideUp} timeout={1200} style={{ transitionDelay: '300ms' }}>
+                            <Typography
+                                variant="h4"
+                                component="h2"
+                                sx={{
+                                    fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+                                    fontWeight: 300,
+                                    color: 'rgba(255, 255, 255, 0.95)',
+                                    mb: 6,
+                                    letterSpacing: '0.05em',
+                                }}
+                            >
+                                Software Engineer
                     </Typography>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography variant="h5" component="h2" gutterBottom>
-                        Technical Skills and Expertise
+                        </Grow>
+                    </Box>
+                </Fade>
+
+                <Fade in={slideUp} timeout={1200} style={{ transitionDelay: '500ms' }}>
+                    <Box
+                        sx={{
+                            maxWidth: '600px',
+                            mb: 6,
+                            textAlign: 'center',
+                        }}
+                    >
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                fontSize: { xs: '1rem', md: '1.25rem' },
+                                fontWeight: 400,
+                                lineHeight: 1.8,
+                                mb: 4,
+                            }}
+                        >
+                            Building scalable solutions with modern technology.
+                            <br />
+                            Passionate about innovation and clean code.
                     </Typography>
-                    <Typography paragraph>
-                        Over the years, I’ve developed a diverse skill set that spans various programming languages, frameworks, and technologies. I am proficient in Java, JavaScript, TypeScript, and C#, and have hands-on experience with frameworks like Spring Boot, Express, React, and .NET. My database experience includes PostgreSQL, Oracle, MSQL, and DynamoDB. Additionally, I hold an AWS Cloud Practitioner certification and am fluent in both English and Spanish, which enhances my ability to work in diverse and international environments.
-                    </Typography>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography variant="h5" component="h2" gutterBottom>
-                        Professional Experience
-                    </Typography>
-                    <Typography paragraph>
-                        I currently serve as a Software Engineer II at West Monroe Partners in Seattle, WA. Since joining the company in July 2022, I’ve been instrumental in developing a greenfield application for AutoNation Mobility, which facilitates online car leasing through integrations with Zendesk, Stripe, Segment, and other software. This project involved primarily backend work with Spring Boot microservices, successfully scaling the application to support thousands of users.
-                    </Typography>
-                    <Typography paragraph>
-                        In another significant role, I contributed to the creation of a Generative AI chatbot with features like a prompt library and document chat, powered by Retrieval Augmented Generation (RAG). This project utilized Express JS for the backend and React for the frontend, with deployment on Azure app services through GitHub Actions CI/CD.
-                    </Typography>
-                    <Typography paragraph>
-                        I also led a cross-functional team in refactoring Azure classic, Octopus, and GitLab pipelines to Azure YAML pipelines, which facilitated a seamless transition from on-premise to cloud infrastructure. This effort standardized deployment processes, enhanced maintainability, and ensured continuity with the new pipelines.
-                    </Typography>
-                    <Typography paragraph>
-                        Prior to my current role, I interned at Level Data, where I streamlined K-12 education data management by integrating various applications across multiple school districts. My responsibilities included troubleshooting and transferring data between disparate systems using databases, REST APIs, plugins, CSV files, SFTPs, and servers.
-                    </Typography>
-                    <Typography paragraph>
-                        Additionally, I served as a Computer Science Tutor at DePauw University, assisting beginner students with fundamental coding concepts in a hybrid classroom setting.
-                    </Typography>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography variant="h5" component="h2" gutterBottom>
-                        Personal Side Projects
-                    </Typography>
-                    <Typography paragraph>
-                        Beyond my professional work, I am passionate about personal projects that push the boundaries of technology. One of my notable side projects is “Sharing the AI,” where I engineered a React front-end integrated with Spring Boot microservices to interact with OpenAI’s Chat endpoint for sharing AI conversations. This project also involved orchestrating CI/CD deployments via Azure DevOps Pipeline, targeting AWS Lightsail with a registered domain.
-                    </Typography>
-                    <Divider sx={{ my: 2 }} />
-                    <Typography variant="h5" component="h2" gutterBottom>
-                        Looking Forward
-                    </Typography>
-                    <Typography paragraph>
-                        As I look to level up my career, I am eager to take on new challenges and opportunities that will allow me to further develop my skills and contribute to innovative projects. My goal is to leverage my technical expertise and experience to make a significant impact in the tech industry and continue growing as a software engineer.
-                    </Typography>
-                    <Typography paragraph>
-                        Feel free to connect with me on my <a href="https://www.linkedin.com/in/seth-fagen-614648162/" target="_blank" rel="noopener noreferrer">linkedin profile</a> or visit my <a href="https://github.com/seth174" target="_blank" rel="noopener noreferrer">GitHub profile</a> for more information about my work.
-                    </Typography>
-                </CardContent>
-            </Card>
+                    </Box>
+                </Fade>
+
+                <Fade in={slideUp} timeout={1200} style={{ transitionDelay: '700ms' }}>
+                    <Stack
+                        direction={{ xs: 'column', sm: 'row' }}
+                        spacing={3}
+                        sx={{ mb: 8, width: '100%', maxWidth: '500px', justifyContent: 'center' }}
+                    >
+                        <Button
+                            variant="contained"
+                            size="large"
+                            onClick={() => navigate('/projects')}
+                            startIcon={<CodeIcon />}
+                            sx={{
+                                py: 1.5,
+                                px: 4,
+                                fontSize: '1.1rem',
+                                fontWeight: 600,
+                                borderRadius: '50px',
+                                background: 'rgba(255, 255, 255, 0.95)',
+                                color: '#667eea',
+                                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                                '&:hover': {
+                                    background: 'rgba(255, 255, 255, 1)',
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.3)',
+                                },
+                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            }}
+                        >
+                            View Projects
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            size="large"
+                            onClick={() => navigate('/blog')}
+                            startIcon={<RocketLaunchIcon />}
+                            sx={{
+                                py: 1.5,
+                                px: 4,
+                                fontSize: '1.1rem',
+                                fontWeight: 600,
+                                borderRadius: '50px',
+                                borderColor: 'rgba(255, 255, 255, 0.8)',
+                                color: 'rgba(255, 255, 255, 0.95)',
+                                borderWidth: 2,
+                                '&:hover': {
+                                    borderColor: 'rgba(255, 255, 255, 1)',
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    transform: 'translateY(-2px)',
+                                },
+                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            }}
+                        >
+                            Read Blog
+                        </Button>
+                    </Stack>
+                </Fade>
+
+                <Fade in={slideUp} timeout={1200} style={{ transitionDelay: '900ms' }}>
+                    <Stack
+                        direction="row"
+                        spacing={3}
+                        sx={{
+                            mt: 4,
+                        }}
+                    >
+                        <Box
+                            component="a"
+                            href="https://github.com/seth174"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: 56,
+                                height: 56,
+                                borderRadius: '50%',
+                                background: 'rgba(255, 255, 255, 0.15)',
+                                backdropFilter: 'blur(10px)',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                '&:hover': {
+                                    background: 'rgba(255, 255, 255, 0.25)',
+                                    transform: 'translateY(-4px) scale(1.1)',
+                                    color: '#fff',
+                                },
+                            }}
+                        >
+                            <GitHubIcon sx={{ fontSize: 28 }} />
+                        </Box>
+                        <Box
+                            component="a"
+                            href="https://www.linkedin.com/in/seth-fagen-614648162/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: 56,
+                                height: 56,
+                                borderRadius: '50%',
+                                background: 'rgba(255, 255, 255, 0.15)',
+                                backdropFilter: 'blur(10px)',
+                                color: 'rgba(255, 255, 255, 0.9)',
+                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                '&:hover': {
+                                    background: 'rgba(255, 255, 255, 0.25)',
+                                    transform: 'translateY(-4px) scale(1.1)',
+                                    color: '#fff',
+                                },
+                            }}
+                        >
+                            <LinkedInIcon sx={{ fontSize: 28 }} />
+                        </Box>
+                    </Stack>
+                </Fade>
+
+                {/* Floating animated elements */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '20%',
+                        left: '10%',
+                        width: 100,
+                        height: 100,
+                        borderRadius: '50%',
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        animation: `${floatAnimation} 6s ease-in-out infinite`,
+                    }}
+                />
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        bottom: '15%',
+                        right: '15%',
+                        width: 60,
+                        height: 60,
+                        borderRadius: '50%',
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        animation: `${floatAnimation} 8s ease-in-out infinite`,
+                        animationDelay: '2s',
+                    }}
+                />
         </Container>
+        </Box>
     );
-}
+};
 
 export default Home;
