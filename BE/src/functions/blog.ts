@@ -13,7 +13,6 @@ const cosmosInputGetAllBlogs = input.cosmosDB({
     connection: CONNECTION,
 });
 
-
 const cosmosInputGetBlogByIdAndPartitionKey = input.cosmosDB({
     databaseName: DATABSE_NAME,
     containerName: CONTAINER_NAME,
